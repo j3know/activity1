@@ -1,5 +1,6 @@
+import 'package:activity1/main.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_practice/main.dart';
+
 
 class SharedDocument {
   final String name;
@@ -14,7 +15,7 @@ class SharedDocument {
 }
 
 class Shared extends StatelessWidget {
-   Shared({Key? key}) : super(key: key);
+   Shared({super.key});
 
   final List<SharedDocument> sharedDocuments = [
     SharedDocument(name: 'Document 1', owner: 'User A', date: DateTime.now()),
@@ -63,7 +64,7 @@ class Shared extends StatelessWidget {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const MyHomePage()),
+              MaterialPageRoute(builder: (context) => const Main()),
             );
           },
         ),

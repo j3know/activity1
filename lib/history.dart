@@ -1,5 +1,6 @@
+import 'package:activity1/main.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_practice/main.dart';
+
 
 class JobEntry {
   final String position;
@@ -28,7 +29,7 @@ class History extends StatelessWidget {
     // Add more job entries as needed
   ];
 
-   History({Key? key}) : super(key: key);
+   History({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +45,7 @@ class History extends StatelessWidget {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const MyHomePage()),
+              MaterialPageRoute(builder: (context) => const Main()),
             );
           },
         ),

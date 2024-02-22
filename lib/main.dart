@@ -1,19 +1,20 @@
 import 'dart:io';
 
+import 'package:activity1/act_API.dart';
+import 'package:activity1/help.dart';
+import 'package:activity1/history.dart';
+import 'package:activity1/mail.dart';
+import 'package:activity1/peronaldetails.dart';
+import 'package:activity1/shares.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_practice/help.dart';
-import 'package:flutter_practice/history.dart';
-import 'package:flutter_practice/mail.dart';
-import 'package:flutter_practice/peronaldetails.dart';
-import 'package:flutter_practice/shares.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const Main());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class Main extends StatelessWidget {
+  const Main({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,15 +26,54 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
-  const MyHomePage({Key? key}) : super(key: key);
+  const MyHomePage({super.key});
 
-  Future<void> _showSignOutConfirmationDialog(BuildContext context) async {
+Future<void> _showSignOutConfirmationDialog(BuildContext context) async {
+  return showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text("Warning!"),
+        content: const Text("Are you sure you want to see my post on Facebook?"),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(); // Close the dialog
+            },
+            child: const Text("No"),
+          ),
+          TextButton(
+            onPressed: () async {
+              // Close the dialog
+              Navigator.of(context).pop();
+
+              // Launch the Facebook link
+              const facebookLink = "https://www.facebook.com/NouGie24/"; // Replace with your Facebook link
+             try {
+  if (await canLaunch(facebookLink)) {
+    await launch(facebookLink);
+  } else {
+    throw 'Could not launch $facebookLink';
+  }
+} catch (e) {
+  print('Error launching Facebook link: $e');
+  // Handle the error or display a user-friendly message
+}
+            },
+            child: const Text("Yes"),
+          ),
+        ],
+      );
+    },
+  );
+}
+   Future<void> _showSignOutConfirmationDialogs(BuildContext context) async {
     return showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Sign Out"),
-          content: const Text("Do you want to sign out?"),
+          title: const Text("Log Out"),
+          content: const Text("Do you want to Log out?"),
           actions: [
             TextButton(
               onPressed: () {
@@ -81,7 +121,7 @@ class MyHomePage extends StatelessWidget {
                               image: DecorationImage(
                                 fit: BoxFit.cover,
                                 image: NetworkImage(
-                                  'https://i.pinimg.com/564x/b9/e0/e3/b9e0e30ac1ec95077b7e1d0abd250e5d.jpg',
+                                  'https://scontent.xx.fbcdn.net/v/t1.15752-9/423036602_913236663623690_1306220833665919715_n.png?stp=dst-png_p206x206&_nc_cat=111&ccb=1-7&_nc_sid=510075&_nc_ohc=-uvhysfEunAAX9pjxo8&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_AdSonjGXfJbvxcqzAT-JUEQxDruISBTwgmKu-7VPEiC7MA&oe=65FDF572',
                                 ),
                               ),
                             ),
@@ -95,7 +135,7 @@ class MyHomePage extends StatelessWidget {
                           child: IconButton(
                             icon: const Icon(Icons.logout_rounded, color: Colors.white),
                             onPressed: () {
-                              _showSignOutConfirmationDialog(context);
+                              _showSignOutConfirmationDialogs(context);
                             },
                           ),
                         ),
@@ -151,13 +191,25 @@ class MyHomePage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ListTile(
-                      leading: const Icon(Icons.person, color: Color.fromARGB(255, 255, 196, 0)),
+                      leading: const Icon(Icons.person_2_outlined, color: Color.fromARGB(255, 255, 196, 0)),
                       title: const Text('Person Detail', style: TextStyle(color: Color.fromARGB(255, 255, 255, 255))),
                       onTap: () {
                         // Navigate to PersonDetailPage on click
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const Person()),
+                          MaterialPageRoute(builder: (context) =>   const Person()),
+                        );
+                      },
+                    ),
+                    const Divider(height: 0.1), // Add Divider here
+                    ListTile(
+                      leading: const Icon(Icons.phone_android_outlined, color: Color.fromARGB(255, 255, 196, 0)),
+                      title: const Text('Contact', style: TextStyle(color: Color.fromARGB(255, 255, 255, 255))),
+                      onTap: () {
+                        // Navigate to PersonDetailPage on click
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) =>  const API()),
                         );
                       },
                     ),
@@ -175,7 +227,7 @@ class MyHomePage extends StatelessWidget {
                     ),
                     const Divider(height: 0.1),
                     ListTile(
-                      leading: const Icon(Icons.mail, color: Color.fromARGB(255, 255, 196, 0)),
+                      leading: const Icon(Icons.mail_lock_outlined , color: Color.fromARGB(255, 255, 196, 0)),
                       title: const Text('Mail', style: TextStyle(color: Color.fromARGB(255, 255, 255, 255))),
                       onTap: () {
                         // Navigate to PersonDetailPage on click
@@ -199,7 +251,7 @@ class MyHomePage extends StatelessWidget {
                     ),
                     const Divider(height: 0.1),
                     ListTile(
-                      leading: const Icon(Icons.help, color: Color.fromARGB(255, 255, 196, 0)),
+                      leading: const Icon(Icons.help_center_outlined, color: Color.fromARGB(255, 255, 196, 0)),
                       title: const Text('Help', style: TextStyle(color: Color.fromARGB(255, 255, 255, 255))),
                       onTap: () {
                         // Navigate to PersonDetailPage on click
@@ -214,27 +266,46 @@ class MyHomePage extends StatelessWidget {
               ),
 
               // Third Column
-              Expanded(
-                flex: -1,
-                child: Center(
-                  child: Column(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          _showSignOutConfirmationDialog(context);
-                        },
-                        child: const Text(
-                          'Sign Out',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20.0,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+           Expanded(
+  flex: -1,
+  child: Center(
+    child: Column(
+      children: [
+        GestureDetector(
+          onTap: () {
+            _showSignOutConfirmationDialog(context);
+          },
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white, // Circle background color
+                ),
+                padding: const EdgeInsets.all(2.0), // Adjust padding as needed
+                child: const Icon(
+                  Icons.facebook,
+                  color: Color.fromARGB(255, 30, 1, 102),// Icon color
+                  size: 30.0, // Icon size
                 ),
               ),
+              const SizedBox(width: 8.0), // Adjust the width for spacing
+              const Text(
+                'See My Post on Facebook',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 15.0,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    ),
+  ),
+),
+
             ],
           ),
         ),
